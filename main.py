@@ -1,11 +1,51 @@
+# takes input of message and key from the user
+def caesar_input():
+    while True:
+        try:
+            message = input("Enter message: ")
+            key = int(input("Enter key: "))
+
+        except ValueError:  # if user entered a non-integer key
+            print("Invalid input. Try again.")
+
+        else:
+            return message, key
+
+
+# converts message to array of numbers based on letters' position in the alphabet
+def message_to_num(message):
+    numbers = []
+
+    for char in message:
+        if char.isalpha():  # convert message to uppercase and remove special characters
+            ascii_equiv = ord(char.upper()) - 64  # ASCII offset, A = 65
+            numbers.append(ascii_equiv)
+
+    return numbers
+
+
+# converts array of numbers back to message
+def num_to_message(numbers):
+    message = ""
+
+    for number in numbers:
+        message += chr(number + 64)  # ASCII offset, A = 65
+
+    return message
+
+
 # encrypts message using the Caesar cipher
 def caesar_encrypt(message, key):
-    pass
+    numbers = message_to_num(message)
+    cipher_nums = []  # shifted numbers
 
+    # Caesar shift
+    for number in numbers:
+        number = (number + key) % 26  # get shift mod 26
+        cipher_nums.append(number)
 
-# decrypts message using the Caesar cipher
-def caesar_decrypt(message, key):
-    pass
+    # translate shifted numbers to message
+    return num_to_message(cipher_nums)
 
 
 # encrypts message using the Vigenere cipher
@@ -37,23 +77,33 @@ def main():
         else:
             # parse user's decision
             if selection == 1:
-                message = input("Enter message: ")
-                key = input("Enter key: ")
-                caesar_encrypt(message, key)
+                # user_input
+                user_input = caesar_input()
+                message, key = user_input[0], user_input[1]
+
+                output = caesar_encrypt(message, key)
+                print("The coded message is {}".format(output))
 
             elif selection == 2:
-                message = input("Enter message: ")
-                key = input("Enter key: ")
-                caesar_decrypt(message, key)
+                # user_input
+                user_input = caesar_input()
+                message, key = user_input[0], user_input[1]
+
+                output = caesar_encrypt(message, -key)
+                print("The original message is {}".format(output))
 
             elif selection == 3:
+                # user_input
                 message = input("Enter message: ")
                 key = input("Enter key: ")
+
                 vigenere_encrypt(message, key)
 
             elif selection == 4:
+                # user_input
                 message = input("Enter message: ")
                 key = input("Enter key: ")
+
                 vigenere_decrypt(message, key)
 
             else:
