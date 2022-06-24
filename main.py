@@ -67,7 +67,29 @@ def caesar_encrypt(message, key):
 
 # encrypts message using the Vigenere cipher
 def vigenere_encrypt(message, key):
-    pass
+    message = message.lower()
+    key = key.lower()
+    message_num = message_to_num(message, 3)
+    length = len(message_num)
+
+    n = length / len(key)
+    n = math.ceil(n)
+
+    key_to_n = key * n
+
+    if len(key_to_n) != length:
+        key_to_n = key_to_n[:length]
+
+    key_num = message_to_num(key_to_n, 3)
+    sum_num = []
+    for i in range(length):
+        num = message_num[i] + key_num[i]
+        if num > 25:
+            num = num - 26
+        sum_num.append(num)
+
+    sum_num_message = num_to_message(sum_num, 3)
+    print("Encrypted message: {}".format(sum_num_message))
 
 
 # decrypts message using the Vigenere cipher
