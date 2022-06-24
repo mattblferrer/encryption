@@ -1,3 +1,6 @@
+import math
+
+
 # takes input of message and key from the user
 def caesar_input():
     while True:
@@ -13,15 +16,23 @@ def caesar_input():
 
 
 # converts message to array of numbers based on letters' position in the alphabet
-def message_to_num(message):
+# TODO: added selection parameter, update arguments hehe
+def message_to_num(message, selection):
     numbers = []
 
-    for char in message:
-        if char.isalpha():  # convert message to uppercase and remove special characters
-            ascii_equiv = ord(char.upper()) - 64  # ASCII offset, A = 65
-            numbers.append(ascii_equiv)
+    if selection == 1 or selection == 2:
+        for char in message:
+            if char.isalpha():  # convert message to uppercase and remove special characters
+                ascii_equiv = ord(char.upper()) - 64  # ASCII offset, A = 65
+                numbers.append(ascii_equiv)
+        return numbers
 
-    return numbers
+    elif selection == 3 or selection == 4:
+        for char in message:
+            if char.isalpha():
+                num = ord(char) - 97
+                numbers.append(num)
+        return numbers
 
 
 # converts array of numbers back to message
