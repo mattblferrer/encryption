@@ -53,7 +53,7 @@ def num_to_message(numbers, selection):
 
 # encrypts message using the Caesar cipher
 def caesar_encrypt(message, key):
-    numbers = message_to_num(message)
+    numbers = message_to_num(message, 3)
     cipher_nums = []  # shifted numbers
 
     # Caesar shift
