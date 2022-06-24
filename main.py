@@ -36,13 +36,19 @@ def message_to_num(message, selection):
 
 
 # converts array of numbers back to message
-def num_to_message(numbers):
+# TODO: added selection parameter, update arguments hehe
+def num_to_message(numbers, selection):
     message = ""
 
-    for number in numbers:
-        message += chr(number + 64)  # ASCII offset, A = 65
+    if selection == 1 or selection == 2:
+        for number in numbers:
+            message += chr(number + 64)  # ASCII offset, A = 65
+        return message
 
-    return message
+    elif selection == 3 or selection == 4:
+        for number in numbers:
+            message += chr(number + 97)
+        return message
 
 
 # encrypts message using the Caesar cipher
