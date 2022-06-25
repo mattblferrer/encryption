@@ -17,43 +17,29 @@ def caesar_input():
 
 # converts message to array of numbers based on letters' position in the alphabet
 # TODO: added selection parameter, update arguments hehe
-def message_to_num(message, selection):
+def message_to_num(message):
     numbers = []
 
-    if selection == 1 or selection == 2:
-        for char in message:
-            if char.isalpha():  # convert message to uppercase and remove special characters
-                ascii_equiv = ord(char.upper()) - 64  # ASCII offset, A = 65
-                numbers.append(ascii_equiv)
-        return numbers
-
-    elif selection == 3 or selection == 4:
-        for char in message:
-            if char.isalpha():
-                num = ord(char) - 97
-                numbers.append(num)
-        return numbers
+    for char in message:
+        if char.isalpha():  # convert message to uppercase and remove special characters
+            ascii_equiv = ord(char.upper()) - 65  # ASCII offset, A = 65
+            numbers.append(ascii_equiv)
+    return numbers
 
 
 # converts array of numbers back to message
 # TODO: added selection parameter, update arguments hehe
-def num_to_message(numbers, selection):
+def num_to_message(numbers):
     message = ""
 
-    if selection == 1 or selection == 2:
-        for number in numbers:
-            message += chr(number + 64)  # ASCII offset, A = 65
-        return message
-
-    elif selection == 3 or selection == 4:
-        for number in numbers:
-            message += chr(number + 97)
-        return message
+    for number in numbers:
+        message += chr(number + 65)  # ASCII offset, A = 65
+    return message
 
 
 # encrypts message using the Caesar cipher
 def caesar_encrypt(message, key):
-    numbers = message_to_num(message, 3)
+    numbers = message_to_num(message)
     cipher_nums = []  # shifted numbers
 
     # Caesar shift
@@ -67,34 +53,42 @@ def caesar_encrypt(message, key):
 
 # encrypts message using the Vigenere cipher
 def vigenere_encrypt(message, key):
-    message = message.lower()
-    key = key.lower()
-    message_num = message_to_num(message, 3)
+    # convert both message and key to uppercase
+    message = message.upper()
+    key = key.upper()
+
+    # take number equivalent of message
+    message_num = message_to_num(message)
     length = len(message_num)
 
+    # extend key to length of message
     n = length / len(key)
     n = math.ceil(n)
-
     key_to_n = key * n
 
     if len(key_to_n) != length:
         key_to_n = key_to_n[:length]
 
-    key_num = message_to_num(key_to_n, 3)
+    # vigenere shift
+    key_num = message_to_num(key_to_n)
     sum_num = []
     for i in range(length):
-        num = message_num[i] + key_num[i]
-        if num > 25:
-            num = num - 26
+        num = (message_num[i] + key_num[i]) % 26
         sum_num.append(num)
 
-    sum_num_message = num_to_message(sum_num, 3)
-    print("Encrypted message: {}".format(sum_num_message))
+    # return message
+    sum_num_message = num_to_message(sum_num)
+    return sum_num_message
 
 
 # decrypts message using the Vigenere cipher
 def vigenere_decrypt(message, key):
-    pass
+    # invert key
+    key_num = message_to_num(key)
+    key_num_inverted = num_to_message([(26-i) for i in key_num])
+
+    # pass inverted key to encryption function
+    return vigenere_encrypt(message, key_num_inverted)
 
 
 def main():
@@ -136,14 +130,16 @@ def main():
                 message = input("Enter message: ")
                 key = input("Enter key: ")
 
-                vigenere_encrypt(message, key)
+                output = vigenere_encrypt(message, key)
+                print("Encrypted message: {}".format(output))
 
             elif selection == 4:
                 # user_input
                 message = input("Enter message: ")
                 key = input("Enter key: ")
 
-                vigenere_decrypt(message, key)
+                output = vigenere_decrypt(message, key)
+                print("Decrypted message: {}".format(output))
 
             else:
                 print("Invalid input. Please try again.")
