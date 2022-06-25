@@ -1,3 +1,6 @@
+import math
+
+
 # takes input of message and key from the user
 def caesar_input():
     while True:
@@ -13,30 +16,44 @@ def caesar_input():
 
 
 # converts message to array of numbers based on letters' position in the alphabet
-def message_to_num(message):
+# TODO: added selection parameter, update arguments hehe
+def message_to_num(message, selection):
     numbers = []
 
-    for char in message:
-        if char.isalpha():  # convert message to uppercase and remove special characters
-            ascii_equiv = ord(char.upper()) - 64  # ASCII offset, A = 65
-            numbers.append(ascii_equiv)
+    if selection == 1 or selection == 2:
+        for char in message:
+            if char.isalpha():  # convert message to uppercase and remove special characters
+                ascii_equiv = ord(char.upper()) - 64  # ASCII offset, A = 65
+                numbers.append(ascii_equiv)
+        return numbers
 
-    return numbers
+    elif selection == 3 or selection == 4:
+        for char in message:
+            if char.isalpha():
+                num = ord(char) - 97
+                numbers.append(num)
+        return numbers
 
 
 # converts array of numbers back to message
-def num_to_message(numbers):
+# TODO: added selection parameter, update arguments hehe
+def num_to_message(numbers, selection):
     message = ""
 
-    for number in numbers:
-        message += chr(number + 64)  # ASCII offset, A = 65
+    if selection == 1 or selection == 2:
+        for number in numbers:
+            message += chr(number + 64)  # ASCII offset, A = 65
+        return message
 
-    return message
+    elif selection == 3 or selection == 4:
+        for number in numbers:
+            message += chr(number + 97)
+        return message
 
 
 # encrypts message using the Caesar cipher
 def caesar_encrypt(message, key):
-    numbers = message_to_num(message)
+    numbers = message_to_num(message, 3)
     cipher_nums = []  # shifted numbers
 
     # Caesar shift
@@ -50,7 +67,29 @@ def caesar_encrypt(message, key):
 
 # encrypts message using the Vigenere cipher
 def vigenere_encrypt(message, key):
-    pass
+    message = message.lower()
+    key = key.lower()
+    message_num = message_to_num(message, 3)
+    length = len(message_num)
+
+    n = length / len(key)
+    n = math.ceil(n)
+
+    key_to_n = key * n
+
+    if len(key_to_n) != length:
+        key_to_n = key_to_n[:length]
+
+    key_num = message_to_num(key_to_n, 3)
+    sum_num = []
+    for i in range(length):
+        num = message_num[i] + key_num[i]
+        if num > 25:
+            num = num - 26
+        sum_num.append(num)
+
+    sum_num_message = num_to_message(sum_num, 3)
+    print("Encrypted message: {}".format(sum_num_message))
 
 
 # decrypts message using the Vigenere cipher
