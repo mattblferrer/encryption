@@ -16,7 +16,6 @@ def caesar_input():
 
 
 # converts message to array of numbers based on letters' position in the alphabet
-# TODO: added selection parameter, update arguments hehe
 def message_to_num(message):
     numbers = []
 
@@ -28,7 +27,6 @@ def message_to_num(message):
 
 
 # converts array of numbers back to message
-# TODO: added selection parameter, update arguments hehe
 def num_to_message(numbers):
     message = ""
 
